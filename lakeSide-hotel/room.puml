@@ -1,0 +1,51 @@
+@startuml
+class RoomService {
+- RoomRepository roomRepository
++ Room addNewRoom(MultipartFile,String,BigDecimal)
++ List<String> getRoomTypes()
++ List<Room> getAllRooms()
++ byte[] getRoomPhotoByRoomId(Long)
++ void deleteRoom(Long)
++ Room updateRoom(Long,String,BigDecimal,byte[])
++ Optional<Room> getRoomById(Long)
++ List<Room> getAvailableRooms(LocalDate,LocalDate,String)
+}
+
+
+interface RoomRepository {
+~ List<String> findDistinctRoomTypes()
+~ List<Room> findAvailableRoomsByDatesAndType(LocalDate,LocalDate,String)
+}
+
+class Room {
+- Long id
+- String roomType
+- BigDecimal roomPrice
+- boolean isBooked
+- Blob photo
+- List<BookedRoom> bookings
++ void addBooking(BookedRoom)
+}
+
+
+class RoomController {
+- RoomService roomService
+- BookedRoomService bookedRoomService
++ ResponseEntity<RoomResponse> addNewRoom(MultipartFile,String,BigDecimal)
++ List<String> getRoomTypes()
++ ResponseEntity<List<RoomResponse>> getAllRooms()
++ ResponseEntity<Void> deleteRoom(Long)
++ ResponseEntity<RoomResponse> updateRoom(Long,String,BigDecimal,MultipartFile)
++ ResponseEntity<Optional<RoomResponse>> getRoomById(Long)
++ ResponseEntity<List<RoomResponse>> getAvailableRooms(LocalDate,LocalDate,String)
+- RoomResponse getRoomResponse(Room)
+- List<BookedRoom> getAllBookingsByRoomId(Long)
+}
+
+
+Room --* RoomService
+RoomRepository --* RoomService
+RoomService --* RoomController
+
+
+@enduml

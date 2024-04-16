@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+   mysql:
+      image: mysql:latest
+      environment:
+         MYSQL_ROOT_PASSWORD: 1234
+         MYSQL_DATABASE: lakeSide-hotel	
+      volumes:
+         - mysql-data:/var/lib/mysql
+      networks:
+         - hotel-network
+   server:
+      build: lakeside-hotel
+      restart: always
+      ports:
+         - '8080:8080'
+      environment:
+         SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/lakeSide-hotel
+         SPRING_DATASOURCE_USERNAME: root
+         SPRING_DATASOURCE_PASSWORD: 1234
+         SERVER_PORT: 8080
+      depends_on:
+         - mysql
+      networks:
+         - hotel-network
+
+   client:
+      build: client/lakeside-hotel
+      ports:
+         - '80:80'
+      depends_on:
+         - server
+      networks:
+         - hotel-network
+
+networks:
+   hotel-network:
+
+volumes:
+   mysql-data:

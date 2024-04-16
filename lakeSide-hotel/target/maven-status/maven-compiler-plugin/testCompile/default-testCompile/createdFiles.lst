@@ -1,0 +1,4 @@
+com\example\lakesidehotel\service\UserServiceTest.class
+com\example\lakesidehotel\service\RoleServiceTest.class
+com\example\lakesidehotel\service\BookedRoomServiceTest.class
+com\example\lakesidehotel\service\RoomServiceTest.class
